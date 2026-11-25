@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portal EFSRT | Acceso al Sistema</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.4s ease-out forwards;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center p-4 relative overflow-hidden">
+
+  <!-- Luces ambientales de fondo -->
+  <div class="absolute -top-32 -left-32 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl pointer-events-none"></div>
+  <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none"></div>
+
+  <!-- Contenedor Principal -->
+  <main class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-12 bg-slate-900/90 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl overflow-hidden animate-fade-in z-10">
+    
+    <!-- Panel Izquierdo: Información Institucional EFSRT -->
+    <section class="md:col-span-5 bg-gradient-to-br from-blue-700 via-blue-800 to-indigo-950 p-8 flex flex-col justify-between">
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-xs font-semibold tracking-wider uppercase text-blue-100 mb-6">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          Plataforma Académica
+        </div>
+        
+        <h1 class="text-2xl lg:text-3xl font-bold text-white leading-tight mb-3">
+          Sistema de Gestión <span class="text-blue-300">EFSRT</span>
+        </h1>
+        <p class="text-sm text-blue-100/80 leading-relaxed">
+          Experiencias Formativas en Situaciones Reales de Trabajo. Control de prácticas modulares, seguimiento de horas y reportes institucionales.
+        </p>
+      </div>
+
+      <!-- Autores / Integrantes -->
+      <div class="mt-8 pt-6 border-t border-white/15">
+        <p class="text-[11px] uppercase tracking-wider text-blue-200/75 font-semibold mb-3">
+          Desarrollado por:
+        </p>
+        <ul class="space-y-2.5 text-xs text-white">
+          <li class="flex items-center gap-2.5 bg-white/10 p-2.5 rounded-xl border border-white/10">
+            <span class="w-8 h-8 rounded-full bg-blue-500/50 flex items-center justify-center font-bold text-blue-100 shrink-0">NH</span>
+            <span class="font-semibold leading-tight">NEBER MAX HUANCA YNOSTROZA</span>
+          </li>
+          <li class="flex items-center gap-2.5 bg-white/10 p-2.5 rounded-xl border border-white/10">
+            <span class="w-8 h-8 rounded-full bg-indigo-500/50 flex items-center justify-center font-bold text-indigo-100 shrink-0">DG</span>
+            <span class="font-semibold leading-tight">DANIEL GOMEX HUAPAYA</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Panel Derecho: Formulario de Inicio de Sesión -->
+    <section class="md:col-span-7 p-8 sm:p-10 flex flex-col justify-center">
+      
+      <!-- Vista Formulario -->
+      <div id="loginView">
+        <div class="mb-6">
+          <h2 class="text-2xl font-bold text-white">Iniciar Sesión</h2>
+          <p class="text-sm text-slate-400 mt-1">Ingresa tus credenciales o usa un acceso rápido de prueba.</p>
+        </div>
+
+        <!-- Botones de autocompletado rápido -->
+        <div class="mb-5">
+          <span class="block text-xs font-medium text-slate-400 mb-2">Acceso rápido:</span>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <button type="button" onclick="autocompletar('nhuanca@efsrt.edu.pe', 'neber2026')"
+              class="text-left px-3 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700 hover:border-blue-500 transition text-xs cursor-pointer">
+              <div class="font-semibold text-slate-200 truncate">Neber Max Huanca</div>
+              <div class="text-slate-400 truncate">nhuanca@efsrt.edu.pe</div>
+            </button>
+            <button type="button" onclick="autocompletar('dgomex@efsrt.edu.pe', 'daniel2026')"
+              class="text-left px-3 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700 hover:border-indigo-500 transition text-xs cursor-pointer">
+              <div class="font-semibold text-slate-200 truncate">Daniel Gomex Huapaya</div>
+              <div class="text-slate-400 truncate">dgomex@efsrt.edu.pe</div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mensaje de error -->
+        <div id="errorBox" class="hidden mb-4 p-3 rounded-xl bg-red-500/10 border border-red-500/40 text-red-300 text-xs flex items-center gap-2">
+          <svg class="w-4 h-4 shrink-0 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <span id="errorText">Credenciales incorrectas.</span>
+        </div>
+
+        <form id="loginForm" class="space-y-4">
+          <!-- Perfil -->
+          <div>
+            <label for="rol" class="block text-xs font-medium text-slate-300 mb-1.5">Tipo de Usuario</label>
+            <select id="rol" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-sm text-slate-200 focus:outline-none focus:border-blue-500 transition">
+              <option value="Estudiante Practicante">Estudiante Practicante (EFSRT)</option>
+              <option value="Docente Supervisor">Docente Supervisor</option>
+              <option value="Coordinador Académico">Coordinador Académico</option>
+            </select>
+          </div>
+
+          <!-- Correo -->
+          <div>
+            <label for="email" class="block text-xs font-medium text-slate-300 mb-1.5">Correo Institucional</label>
+            <input type="email" id="email" required placeholder="usuario@efsrt.edu.pe"
+              class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition" />
+          </div>
+
+          <!-- Contraseña -->
+          <div>
+            <label for="password" class="block text-xs font-medium text-slate-300 mb-1.5">Contraseña</label>
+            <div class="relative">
+              <input type="password" id="password" required placeholder="••••••••"
+                class="w-full px-3.5 pr-12 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition" />
+              <button type="button" onclick="togglePassword()" id="toggleBtn"
+                class="absolute right-3 top-2.5 text-xs text-slate-400 hover:text-white cursor-pointer">
+                Ver
+              </button>
+            </div>
+          </div>
+
+          <!-- Opciones extra -->
+          <div class="flex items-center justify-between pt-1">
+            <label class="inline-flex items-center gap-2 text-xs text-slate-400 cursor-pointer">
+              <input type="checkbox" checked class="rounded border-slate-700 bg-slate-950 text-blue-600 focus:ring-0">
+              Recordar sesión
+            </label>
+            <span class="text-[11px] text-slate-500">Período 2026-II</span>
+          </div>
+
+          <!-- Botón Ingresar -->
+          <button type="submit"
+            class="w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-500 active:scale-[0.99] text-white font-semibold text-sm shadow-lg shadow-blue-600/25 transition cursor-pointer">
+            Ingresar al Sistema EFSRT
+          </button>
+        </form>
+      </div>
+
+      <!-- Vista Bienvenida (al iniciar sesión) -->
+      <div id="welcomeView" class="hidden text-center py-6 animate-fade-in">
+        <div class="w-16 h-16 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 flex items-center justify-center mx-auto mb-4">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+          </svg>
+        </div>
+        <span id="badgeRol" class="inline-block px-3 py-1 rounded-full bg-blue-500/15 text-blue-300 text-xs font-semibold mb-2"></span>
+        <h3 class="text-xl font-bold text-white mb-1">¡Bienvenido al Portal EFSRT!</h3>
+        <p id="welcomeName" class="text-base font-bold text-emerald-400 mb-3"></p>
+        <p class="text-xs text-slate-400 max-w-sm mx-auto mb-6 leading-relaxed">
+          Sesión iniciada correctamente. Módulo de registro de actividades, informes y evaluación de experiencias formativas habilitado.
+        </p>
+        <button type="button" onclick="cerrarSesion()"
+          class="px-5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 transition cursor-pointer">
+          Cerrar Sesión
+        </button>
+      </div>
+
+    </section>
+  </main>
+
+  <script>
+    const usuarios = {
+      'nhuanca@efsrt.edu.pe': {
+        pass: 'neber2026',
+        nombre: 'NEBER MAX HUANCA YNOSTROZA'
+      },
+      'dgomex@efsrt.edu.pe': {
+        pass: 'daniel2026',
+        nombre: 'DANIEL GOMEX HUAPAYA'
+      }
+    };
+
+    function autocompletar(email, pass) {
+      document.getElementById('email').value = email;
+      document.getElementById('password').value = pass;
+      document.getElementById('errorBox').classList.add('hidden');
+    }
+
+    function togglePassword() {
+      const input = document.getElementById('password');
+      const btn = document.getElementById('toggleBtn');
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.textContent = 'Ocultar';
+      } else {
+        input.type = 'password';
+        btn.textContent = 'Ver';
+      }
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim().toLowerCase();
+      const pass = document.getElementById('password').value;
+      const rol = document.getElementById('rol').value;
+      const errorBox = document.getElementById('errorBox');
+      const errorText = document.getElementById('errorText');
+
+      if (usuarios[email] && usuarios[email].pass === pass) {
+        errorBox.classList.add('hidden');
+        document.getElementById('loginView').classList.add('hidden');
+        document.getElementById('welcomeView').classList.remove('hidden');
+        document.getElementById('badgeRol').textContent = rol;
+        document.getElementById('welcomeName').textContent = usuarios[email].nombre;
+      } else {
+        errorText.textContent = 'Correo o contraseña inválidos. Usa los botones de acceso rápido.';
+        errorBox.classList.remove('hidden');
+      }
+    });
+
+    function cerrarSesion() {
+      document.getElementById('loginForm').reset();
+      document.getElementById('welcomeView').classList.add('hidden');
+      document.getElementById('loginView').classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>
